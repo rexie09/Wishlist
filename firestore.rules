@@ -1,0 +1,35 @@
+rules_version = '2';
+
+// Only these two Google accounts can read or write anything.
+// Use all-lowercase emails, and keep them the same as OWNER_EMAIL / PARTNER_EMAIL in index.html.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function allowed() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in ['you@gmail.com', 'her@gmail.com'];
+    }
+
+    // Wishlist items (both lists)
+    match /items/{itemId} {
+      allow read, delete: if allowed();
+      allow create, update: if allowed()
+        && request.resource.data.keys().hasOnly(['list','title','url','price','priority','note','group','createdAt'])
+        && request.resource.data.list in ['me','her']
+        && request.resource.data.title is string
+        && request.resource.data.title.size() <= 200
+        && request.resource.data.note.size() <= 1000;
+    }
+
+    // Display names
+    match /settings/{docId} {
+      allow read, write: if allowed();
+    }
+
+    // "I got this" marks — private to whoever made them, so gifts stay a surprise
+    match /data/users/{uid}/{markId} {
+      allow read, write: if allowed() && request.auth.uid == uid;
+    }
+  }
+}

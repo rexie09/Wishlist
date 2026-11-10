@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Wishlists">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#fbf6f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b1615" media="(prefers-color-scheme: dark)">
+<title>Our Wishlists</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf6f1; --card:#fff; --ink:#2a1f1d; --muted:#8a7a74; --line:#eadfd7;
+  --accent:#d9534f; --accent2:#f3c9c0; --good:#3f8f5b; --goodbg:#e6f3ea;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#1b1615;--card:#262020;--ink:#f4ebe7;--muted:#a8978f;--line:#3a302d;--accent:#ff7a72;--accent2:#5a2f2b;--good:#7fd29b;--goodbg:#21352a}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 80px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:28px;margin:0;letter-spacing:-.01em}
+h1 span{color:var(--accent)}
+.who{font-size:13px;color:var(--muted)}
+.who b{color:var(--ink)}
+.linkbtn{background:none;border:0;color:var(--accent);font:inherit;font-size:13px;cursor:pointer;padding:0;text-decoration:underline}
+.tabs{display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:16px}
+.tab{flex:1;border:0;background:none;padding:10px 12px;border-radius:999px;font:600 14px Inter,sans-serif;color:var(--muted);cursor:pointer}
+.tab.on{background:var(--accent);color:#fff}
+.hint{font-size:13px;color:var(--muted);margin:0 4px 14px}
+.addbar{display:flex;gap:8px;margin-bottom:16px}
+.addbar input{flex:1}
+input,textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+.btn{border:0;border-radius:12px;padding:11px 16px;font:600 14px Inter,sans-serif;cursor:pointer;background:var(--accent);color:#fff;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:7px 11px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.5;cursor:default}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:flex-start}
+.item.got{opacity:.7}
+.badge{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font:700 13px Inter,sans-serif;color:#fff;text-transform:uppercase}
+.body{flex:1;min-width:0}
+.title{font-weight:600;font-size:15px;word-wrap:break-word}
+.title a{color:inherit;text-decoration:none}
+.title a:hover{text-decoration:underline}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:4px;font-size:13px;color:var(--muted)}
+.price{color:var(--ink);font-weight:600}
+.pri{color:var(--accent)}
+.note{margin-top:6px;font-size:14px;color:var(--ink);white-space:pre-wrap}
+.actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.gotTag{display:inline-block;background:var(--goodbg);color:var(--good);font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px}
+.group{border:1.5px solid var(--accent2);background:color-mix(in srgb,var(--accent2) 25%,transparent);border-radius:20px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.ghead{padding:4px 6px 2px}
+.gname{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:17px}
+.ginfo{font-size:12.5px;color:var(--muted)}
+.gatebox{text-align:center;padding:18vh 10px 0}
+.gatebox h1{font-size:34px;margin-top:6px}
+.empty{text-align:center;color:var(--muted);padding:40px 16px;border:1.5px dashed var(--line);border-radius:var(--r)}
+.empty .big{font-family:Fraunces,serif;font-size:20px;color:var(--ink);margin-bottom:4px}
+.status{font-size:13px;color:var(--muted);text-align:center;margin:8px 0}
+.filters{display:flex;gap:8px;margin-bottom:12px;align-items:center}
+.filters select{width:auto;padding:7px 10px;font-size:13px;border-radius:10px}
+.count{font-size:13px;color:var(--muted);margin-left:auto}
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(20,10,8,.45);display:none;align-items:flex-end;justify-content:center;z-index:10}
+.scrim.open{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:20px 18px 24px;max-height:92vh;overflow:auto}
+@media(min-width:600px){.scrim{align-items:center}.sheet{border-radius:20px}}
+.sheet h2{font-family:Fraunces,serif;margin:0 0 14px;font-size:22px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sheet .foot{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:20}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap" id="gate" style="display:none">
+  <div class="gatebox">
+    <div style="font-size:44px">🎁</div>
+    <h1>Our <span>Wishlists</span></h1>
+    <p class="hint" style="margin:10px 0 18px">Private — sign in with your Google account.</p>
+    <button class="btn" id="signIn">Sign in with Google</button>
+    <p class="hint" id="gateMsg" style="margin-top:14px"></p>
+  </div>
+</div>
+<div class="wrap" id="app" style="display:none">
+  <header>
+    <h1>Our <span>Wishlists</span></h1>
+    <div class="who" id="who"></div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab on" id="tabMine"></button>
+    <button class="tab" id="tabTheirs"></button>
+  </div>
+
+  <p class="hint" id="hint"></p>
+
+  <div class="addbar" id="addbar">
+    <input id="quickUrl" placeholder="Paste an Amazon (or any) link, or type an item…" autocomplete="off">
+    <button class="btn" id="quickAdd">Add</button>
+  </div>
+
+  <div class="filters" id="filters">
+    <select id="sort">
+      <option value="new">Newest</option>
+      <option value="pri">Most wanted</option>
+      <option value="low">Price: low → high</option>
+      <option value="high">Price: high → low</option>
+    </select>
+    <select id="show" style="display:none">
+      <option value="all">Show all</option>
+      <option value="open">Hide ones I got</option>
+    </select>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="status" id="status">Loading…</div>
+  <div class="list" id="list"></div>
+</div>
+
+<!-- edit sheet -->
+<div class="scrim" id="scrim">
+  <form class="sheet" id="form">
+    <h2 id="formTitle">Add item</h2>
+    <div class="field"><label>Item</label><input id="fTitle" required maxlength="200" placeholder="e.g. Klein Tools multimeter"></div>
+    <div class="field"><label>Link</label><input id="fUrl" type="url" placeholder="https://amazon.com/…"></div>
+    <div class="row2">
+      <div class="field"><label>Price</label><input id="fPrice" inputmode="decimal" placeholder="$"></div>
+      <div class="field"><label>How much I want it</label>
+        <select id="fPri"><option value="3">❤❤❤ Really want</option><option value="2" selected>❤❤ Would love</option><option value="1">❤ Nice to have</option></select>
+      </div>
+    </div>
+    <div class="field"><label>Group / project (optional)</label><input id="fGroup" list="groupList" maxlength="60" placeholder="e.g. Car audio build — items that go together"><datalist id="groupList"></datalist></div>
+    <div class="field"><label>Notes (size, color, etc.)</label><textarea id="fNote" rows="3" maxlength="1000" placeholder="Size L, black if possible…"></textarea></div>
+    <div class="foot">
+      <button type="button" class="btn ghost" id="cancel">Cancel</button>
+      <button type="submit" class="btn" id="save">Save</button>
+    </div>
+  </form>
+</div>
+
+<!-- names sheet -->
+<div class="scrim" id="nameScrim">
+  <form class="sheet" id="nameForm">
+    <h2>Names</h2>
+    <div class="field"><label>Owner's name (whoever made this page)</label><input id="nMe" maxlength="40"></div>
+    <div class="field"><label>Partner's name</label><input id="nHer" maxlength="40"></div>
+    <div class="foot">
+      <button type="button" class="btn ghost" id="nameCancel">Cancel</button>
+      <button type="submit" class="btn">Save</button>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast"></div>
+<button id="signOut" hidden></button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+import { getFirestore, doc, collection, setDoc, addDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+
+// =====================  EDIT THESE  =====================
+// 1) Paste your Firebase web config (Firebase console → Project settings → Your apps → Web app)
+const FIREBASE_CONFIG = {
+  apiKey: "PASTE_HERE",
+  authDomain: "PASTE_HERE.firebaseapp.com",
+  projectId: "PASTE_HERE",
+  appId: "PASTE_HERE"
+};
+// 2) The two Google accounts allowed in (must match firestore.rules)
+const OWNER_EMAIL   = "you@gmail.com";        // your list
+const PARTNER_EMAIL = "her@gmail.com";        // her list
+// ========================================================
+
+(() => {
+  const $ = id => document.getElementById(id);
+  const state = {
+    db:null, user:null, uid:null,
+    me:"me",            // which list belongs to the viewer: "me" (owner) or "her"
+    view:"mine",
+    items:[], names:{me:"Justin", her:"Her"},
+    gotIds:new Set(),   // private: things THIS viewer marked as bought
+    canWrite:true, editing:null, loaded:false
+  };
+
+  const otherKey = () => state.me === "me" ? "her" : "me";
+  const nameOf = k => (state.names[k] || (k==="me"?"Justin":"Her")).trim();
+  const listKey = () => state.view === "mine" ? state.me : otherKey();
+
+  function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2200); }
+
+  // ---------- link helpers ----------
+  function cleanUrl(u){
+    try{ const x=new URL(u.trim()); if(!/^https?:$/.test(x.protocol)) return ""; return x.href; }catch{ return ""; }
+  }
+  function store(u){
+    try{
+      const h=new URL(u).hostname.replace(/^www\.|^m\.|^smile\./,"");
+      if(/amazon\.|amzn\./.test(h)) return {name:"Amazon",abbr:"a",color:"#ff9900"};
+      const known={"walmart.com":["Walmart","#0071ce"],"target.com":["Target","#cc0000"],"bestbuy.com":["Best Buy","#0046be"],"etsy.com":["Etsy","#f1641e"],"ebay.com":["eBay","#e53238"],"homedepot.com":["Home Depot","#f96302"],"lowes.com":["Lowe's","#004990"],"harborfreight.com":["Harbor Freight","#c8102e"],"newegg.com":["Newegg","#f7a51c"],"sephora.com":["Sephora","#111"],"ulta.com":["Ulta","#f26b3a"],"shein.com":["SHEIN","#222"],"steampowered.com":["Steam","#1b2838"],"store.steampowered.com":["Steam","#1b2838"],"temu.com":["Temu","#fb7701"],"aliexpress.com":["AliExpress","#e43225"]};
+      const k=known[h]; if(k) return {name:k[0],abbr:k[0][0],color:k[1]};
+      const base=h.split(".").slice(-2,-1)[0]||h;
+      let hash=0; for(const c of h) hash=(hash*31+c.charCodeAt(0))|0;
+      return {name:h,abbr:base.slice(0,2),color:`hsl(${Math.abs(hash)%360} 45% 48%)`};
+    }catch{ return null; }
+  }
+  // Guess a product title from the URL path (Amazon puts it before /dp/)
+  function guessTitle(u){
+    try{
+      const x=new URL(u); const parts=x.pathname.split("/").filter(Boolean);
+      let slug="";
+      const dp=parts.findIndex(p=>p==="dp"||p==="gp");
+      if(dp>0) slug=parts[dp-1];
+      else slug=parts.filter(p=>/[a-z]-[a-z]/i.test(p) && !/^\d+$/.test(p)).sort((a,b)=>b.length-a.length)[0]||"";
+      slug=decodeURIComponent(slug).replace(/\.(html?|php)$/,"").replace(/[-_+]+/g," ").replace(/\s+/g," ").trim();
+      if(slug.length<4) return "";
+      return slug.charAt(0).toUpperCase()+slug.slice(1);
+    }catch{ return ""; }
+  }
+  function priceNum(p){ const n=parseFloat(String(p||"").replace(/[^0-9.]/g,"")); return isNaN(n)?null:n; }
+  function fmtPrice(p){ const n=priceNum(p); return n==null?"":"$"+(n%1?n.toFixed(2):n); }
+
+  // ---------- render ----------
+  function render(){
+    const mine = state.view==="mine";
+    $("tabMine").textContent = "My list";
+    $("tabTheirs").textContent = nameOf(otherKey()) + "'s list";
+    $("tabMine").classList.toggle("on",mine);
+    $("tabTheirs").classList.toggle("on",!mine);
+    $("who").innerHTML="";
+    const w=document.createElement("span"); w.append("Hi, "); const b=document.createElement("b"); b.textContent=nameOf(state.me); w.append(b,"  ·  ");
+    const nb=document.createElement("button"); nb.className="linkbtn"; nb.textContent="names"; nb.onclick=openNames; w.append(nb," · ");
+    const so=document.createElement("button"); so.className="linkbtn"; so.textContent="sign out"; so.onclick=()=>$("signOut").click(); w.append(so);
+    $("who").append(w);
+
+    $("hint").textContent = mine
+      ? "Add stuff you want. You'll never see what's been bought — it stays a surprise."
+      : `Shopping for ${nameOf(otherKey())}? Tap “I got this” so you remember — ${nameOf(otherKey())} can't see it.`;
+    $("addbar").style.display = mine && state.canWrite ? "" : "none";
+    $("show").style.display = mine ? "none" : "";
+
+    const key=listKey();
+    let items=state.items.filter(i=>i.list===key);
+    if(!mine && $("show").value==="open") items=items.filter(i=>!state.gotIds.has(i.id));
+    const s=$("sort").value;
+    items.sort((a,b)=>{
+      if(s==="pri") return (b.priority||0)-(a.priority||0)||(b.createdAt||0)-(a.createdAt||0);
+      if(s==="low"||s==="high"){ const pa=priceNum(a.price), pb=priceNum(b.price);
+        if(pa==null&&pb==null) return 0; if(pa==null) return 1; if(pb==null) return -1; return s==="low"?pa-pb:pb-pa; }
+      return (b.createdAt||0)-(a.createdAt||0);
+    });
+    const total=state.items.filter(i=>i.list===key);
+    $("count").textContent = total.length ? `${total.length} item${total.length>1?"s":""}` : "";
+
+    const list=$("list"); list.innerHTML="";
+    if(!state.loaded) return;
+    if(!items.length){
+      const e=document.createElement("div"); e.className="empty";
+      const big=document.createElement("div"); big.className="big";
+      big.textContent = mine ? "Your list is empty" : `${nameOf(otherKey())} hasn't added anything yet`;
+      const sm=document.createElement("div");
+      sm.textContent = mine ? "Paste a link above to add your first wish." : "Check back soon 👀";
+      if(!mine && total.length) { big.textContent="You've got everything!"; sm.textContent="Switch to “Show all” to see them."; }
+      e.append(big,sm); list.append(e); return;
+    }
+    // group items: groups first (in order of their best-sorted item), loose items after
+    const groups=new Map(); const loose=[];
+    for(const it of items){
+      const g=(it.group||"").trim();
+      if(!g){ loose.push(it); continue; }
+      const k=g.toLowerCase();
+      if(!groups.has(k)) groups.set(k,{name:g,items:[]});
+      groups.get(k).items.push(it);
+    }
+    for(const g of groups.values()){
+      const box=document.createElement("div"); box.className="group";
+      const head=document.createElement("div"); head.className="ghead";
+      const nm=document.createElement("div"); nm.className="gname"; nm.textContent="🧩 "+g.name;
+      const all=state.items.filter(i=>i.list===key && (i.group||"").trim().toLowerCase()===g.name.toLowerCase());
+      const sum=all.reduce((s,i)=>s+(priceNum(i.price)||0),0);
+      const info=document.createElement("div"); info.className="ginfo";
+      let txt=`${all.length} item${all.length>1?"s":""} that go together`;
+      if(sum) txt+=` · $${sum%1?sum.toFixed(2):sum} total`;
+      if(!mine){ const n=all.filter(i=>state.gotIds.has(i.id)).length; if(n) txt+=` · you got ${n}/${all.length}`; }
+      info.textContent=txt;
+      head.append(nm,info); box.append(head);
+      for(const it of g.items) box.append(card(it,mine));
+      list.append(box);
+    }
+    for(const it of loose) list.append(card(it,mine));
+  }
+
+  function card(it,mine){
+    const got=!mine && state.gotIds.has(it.id);
+    const el=document.createElement("div"); el.className="item"+(got?" got":"");
+    const st=it.url?store(it.url):null;
+    const badge=document.createElement("div"); badge.className="badge";
+    badge.style.background = st?st.color:"var(--accent2)";
+    badge.textContent = st?st.abbr:"🎁";
+    const body=document.createElement("div"); body.className="body";
+    const t=document.createElement("div"); t.className="title";
+    if(it.url){ const a=document.createElement("a"); a.href=it.url; a.target="_blank"; a.rel="noopener noreferrer"; a.textContent=it.title||"Untitled"; t.append(a); }
+    else t.textContent=it.title||"Untitled";
+    const meta=document.createElement("div"); meta.className="meta";
+    if(fmtPrice(it.price)){ const p=document.createElement("span"); p.className="price"; p.textContent=fmtPrice(it.price); meta.append(p); }
+    const pr=document.createElement("span"); pr.className="pri"; pr.textContent="❤".repeat(it.priority||2); meta.append(pr);
+    if(st){ const s=document.createElement("span"); s.textContent=st.name; meta.append(s); }
+    if(got){ const g=document.createElement("span"); g.className="gotTag"; g.textContent="✓ You got this"; meta.append(g); }
+    body.append(t,meta);
+    if(it.note){ const n=document.createElement("div"); n.className="note"; n.textContent=it.note; body.append(n); }
+    const act=document.createElement("div"); act.className="actions";
+    if(it.url){ const o=document.createElement("a"); o.className="btn small ghost"; o.href=it.url; o.target="_blank"; o.rel="noopener noreferrer"; o.textContent="Open link ↗"; o.style.textDecoration="none"; act.append(o); }
+    if(mine && state.canWrite){
+      const e=document.createElement("button"); e.className="btn small ghost"; e.textContent="Edit"; e.onclick=()=>openForm(it); act.append(e);
+      const d=document.createElement("button"); d.className="btn small ghost"; d.textContent="Remove";
+      d.onclick=()=>{ if(d.dataset.sure){ remove(it); } else { d.dataset.sure=1; d.textContent="Tap again to remove"; setTimeout(()=>{delete d.dataset.sure; d.textContent="Remove";},3000);} };
+      act.append(d);
+    }
+    if(!mine){
+      const g=document.createElement("button"); g.className="btn small"+(got?" ghost":"");
+      g.textContent = got?"Undo":"🎁 I got this"; g.onclick=()=>toggleGot(it); act.append(g);
+    }
+    body.append(act);
+    el.append(badge,body);
+    return el;
+  }
+
+  // ---------- form ----------
+  function openForm(it, preset){
+    state.editing=it||null;
+    $("formTitle").textContent = it?"Edit item":"Add item";
+    const v = it || preset || {};
+    $("fTitle").value=v.title||""; $("fUrl").value=v.url||""; $("fPrice").value=v.price||"";
+    $("fPri").value=String(v.priority||2); $("fNote").value=v.note||""; $("fGroup").value=v.group||"";
+    const owner = it ? it.list : state.me;
+    const dl=$("groupList"); dl.innerHTML="";
+    [...new Set(state.items.filter(i=>i.list===owner&&i.group).map(i=>i.group))].sort().forEach(g=>{ const o=document.createElement("option"); o.value=g; dl.append(o); });
+    $("scrim").classList.add("open");
+    setTimeout(()=>($("fTitle").value?$("fPrice"):$("fTitle")).focus(),50);
+  }
+  function closeForm(){ $("scrim").classList.remove("open"); state.editing=null; }
+  $("cancel").onclick=closeForm;
+  $("scrim").onclick=e=>{ if(e.target===$("scrim")) closeForm(); };
+  $("fUrl").addEventListener("change",()=>{ const u=cleanUrl($("fUrl").value); if(u && !$("fTitle").value) $("fTitle").value=guessTitle(u); });
+
+  $("form").onsubmit=async e=>{
+    e.preventDefault();
+    if(!state.db) return toast("Not connected yet");
+    const data={
+      list: state.editing ? state.editing.list : state.me,
+      title: $("fTitle").value.trim().slice(0,200),
+      url: cleanUrl($("fUrl").value),
+      price: $("fPrice").value.trim().slice(0,20),
+      priority: +$("fPri").value,
+      note: $("fNote").value.trim().slice(0,1000),
+      group: $("fGroup").value.trim().replace(/\s+/g," ").slice(0,60),
+      createdAt: state.editing ? (state.editing.createdAt||Date.now()) : Date.now()
+    };
+    if(!data.title) return;
+    $("save").disabled=true;
+    try{
+      if(state.editing) await state.db.doc("items/"+state.editing.id).set(data);
+      else await state.db.collection("items").add(data);
+      closeForm(); toast(state.editing?"Saved":"Added to your list");
+    }catch(err){ handleWriteErr(err); }
+    $("save").disabled=false;
+  };
+
+  $("quickAdd").onclick=()=>{
+    const raw=$("quickUrl").value.trim();
+    const u=cleanUrl(raw);
+    if(u) openForm(null,{url:u,title:guessTitle(u)});
+    else openForm(null,{title:raw});
+    $("quickUrl").value="";
+  };
+  $("quickUrl").addEventListener("keydown",e=>{ if(e.key==="Enter") $("quickAdd").click(); });
+  $("quickUrl").addEventListener("paste",()=>setTimeout(()=>{ if(cleanUrl($("quickUrl").value)) $("quickAdd").click(); },0));
+
+  async function remove(it){
+    try{ await state.db.doc("items/"+it.id).delete(); toast("Removed"); }catch(err){ handleWriteErr(err); }
+  }
+
+  // "I got this" marks live in the viewer's PRIVATE subtree — the other person can't read them.
+  async function toggleGot(it){
+    if(!state.db || !state.uid) return toast("Can't save that right now");
+    const has=state.gotIds.has(it.id);
+    has?state.gotIds.delete(it.id):state.gotIds.add(it.id); render();
+    try{
+      const ref=state.db.collection(`data/users/${state.uid}`).doc("got_"+it.id);
+      if(has) await ref.delete(); else await ref.set({at:Date.now()});
+      toast(has?"Unmarked":"Marked as bought 🤫");
+    }catch(err){ has?state.gotIds.add(it.id):state.gotIds.delete(it.id); render(); handleWriteErr(err); }
+  }
+
+  function handleWriteErr(err){
+    if(err && err.code==="permission-denied") toast("Not allowed — check firestore.rules emails");
+    else toast("Couldn't save — try again");
+  }
+
+  // ---------- names ----------
+  function openNames(){ $("nMe").value=state.names.me||""; $("nHer").value=state.names.her||""; $("nameScrim").classList.add("open"); }
+  $("nameCancel").onclick=()=>$("nameScrim").classList.remove("open");
+  $("nameForm").onsubmit=async e=>{
+    e.preventDefault();
+    const n={me:$("nMe").value.trim().slice(0,40)||"Justin", her:$("nHer").value.trim().slice(0,40)||"Her"};
+    try{ await state.db.doc("settings/names").set(n); $("nameScrim").classList.remove("open"); }catch(err){ handleWriteErr(err); }
+  };
+
+  // ---------- tabs / filters ----------
+  $("tabMine").onclick=()=>{ state.view="mine"; render(); };
+  $("tabTheirs").onclick=()=>{ state.view="theirs"; render(); };
+  $("sort").onchange=render; $("show").onchange=render;
+
+  // ---------- boot (Firebase) ----------
+  render();
+  $("status").textContent="";
+  const app=initializeApp(FIREBASE_CONFIG);
+  const auth=getAuth(app);
+  const fs=getFirestore(app);
+  const subs=[];
+
+  // tiny adapter so the app code talks to Firestore with simple paths
+  const wrapQ=s=>({docs:s.docs.map(d=>({id:d.id,data:()=>d.data()})),metadata:s.metadata});
+  const fdb={
+    doc:p=>{ const r=doc(fs,p); return {
+      set:d=>setDoc(r,d), delete:()=>deleteDoc(r),
+      onSnapshot:(n,e)=>onSnapshot(r,s=>n({exists:s.exists(),data:()=>s.data()}),e) }; },
+    collection:p=>{ const c=collection(fs,p); return {
+      add:d=>addDoc(c,d),
+      doc:id=>fdb.doc(p+"/"+id),
+      onSnapshot:(n,e)=>onSnapshot(c,s=>n(wrapQ(s)),e) }; }
+  };
+
+  $("signIn").onclick=async()=>{
+    const provider=new GoogleAuthProvider();
+    try{ await signInWithPopup(auth,provider); }
+    catch(err){
+      // Home-screen apps sometimes block popups — fall back to a full-page redirect
+      if(["auth/popup-blocked","auth/operation-not-supported-in-this-environment","auth/web-storage-unsupported"].includes(err.code)){
+        try{ await signInWithRedirect(auth,provider); return; }catch(e2){ err=e2; }
+      }
+      if(err.code!=="auth/popup-closed-by-user" && err.code!=="auth/cancelled-popup-request")
+        $("gateMsg").textContent="Sign-in didn't finish: "+(err.code||err.message);
+    }
+  };
+  $("signOut").onclick=()=>signOut(auth);
+
+  onAuthStateChanged(auth,user=>{
+    subs.splice(0).forEach(u=>u());
+    state.items=[]; state.gotIds=new Set(); state.loaded=false;
+    if(!user){ $("gate").style.display=""; $("app").style.display="none"; $("gateMsg").textContent=""; return; }
+    const email=(user.email||"").toLowerCase();
+    const isOwner=email===OWNER_EMAIL.toLowerCase(), isPartner=email===PARTNER_EMAIL.toLowerCase();
+    if(!isOwner && !isPartner){
+      $("gate").style.display=""; $("app").style.display="none";
+      $("gateMsg").textContent=`${user.email} isn't on the guest list.`;
+      signOut(auth); return;
+    }
+    $("gate").style.display="none"; $("app").style.display="";
+    state.db=fdb; state.uid=user.uid; state.me=isOwner?"me":"her"; state.canWrite=true;
+    $("status").textContent="Loading…"; render();
+
+    subs.push(fdb.collection("items").onSnapshot(snap=>{
+      state.items=snap.docs.map(d=>({id:d.id,...d.data()}));
+      state.loaded=true; $("status").textContent=""; render();
+    },err=>{ state.loaded=true; $("status").textContent="Couldn't load the list ("+(err.code||"error")+")."; render(); }));
+
+    subs.push(fdb.doc("settings/names").onSnapshot(s=>{ if(s.exists){ const d=s.data(); state.names={me:d.me||"Justin",her:d.her||"Her"}; render(); } },()=>{}));
+
+    subs.push(fdb.collection(`data/users/${state.uid}`).onSnapshot(s=>{ state.gotIds=new Set(s.docs.filter(d=>d.id.startsWith("got_")).map(d=>d.id.slice(4))); render(); },()=>{}));
+  });
+})();
+</script>
+</body>
+</html>
